@@ -1,13 +1,16 @@
 ---
 title: "Milestone Report for NLP Capstone Project"
 author: "Reza Rosli (zaros)"
-date: "27 December 2015"
-output: html_document
+date: "29 December 2015"
+output: 
+  html_document:
+    toc: true
+    theme: united
 ---
 
 ## Introduction 
 
-This is the milestone report for the Data Science Specialization Capstone Project on Coursera. This report intends to show my current progress and discussion with hopes of obtaining some constructive feedback from my peers and teachers. As the intended audience for this report are non-data scientists, I have kept code output to minimum and if it interests the reader, you may view the source code for this file at my Github repository.
+This is the milestone report for the Data Science Specialization Capstone Project on Coursera. This report intends to show my current progress and discussion with hopes of obtaining some constructive feedback from my peers and teachers. As the intended audience for this report are non-data scientists, I have kept code output to minimum and if it interests the reader, you may view the source code for this file at my [Github repository](https://github.com/zaros/coursera-capstone).
 
 ## Executive Summary
 
@@ -342,47 +345,33 @@ The number of unigrams to achieve 50% coverage is ```r length(grams[which(grams$
 80%: ```r length(grams[which(grams$cumpct<=80),c("grams")])```; and 90%: 
 ```r length(grams[which(grams$cumpct<=90),c("grams")])```.
 
-```{r Coverage plots - Bigram, echo=FALSE} 
-
-plot(bigrams$cumpct,ylab="Coverage (%)",xlab="Term Count",main="Coverage for 2-gram Terms")
-abline(h=50)
-abline(h=80)
-abline(h=90)
-
-grams<-bigrams
-```
-
-The number of bigrams to achieve 50% coverage is ```r length(grams[which(grams$cumpct<=50),c("grams")])```; 
-80%: ```r length(grams[which(grams$cumpct<=80),c("grams")])```; and 90%: 
-```r length(grams[which(grams$cumpct<=90),c("grams")])```.
-
-
-```{r Coverage plots - Trigram, echo=FALSE} 
-
-plot(trigrams$cumpct,ylab="Coverage (%)",xlab="Term Count",main="Coverage for 3-gram Terms")
-abline(h=50)
-abline(h=80)
-abline(h=90)
-
-grams<-trigrams
-```
-
-The number of bigrams to achieve 50% coverage is ```r length(grams[which(grams$cumpct<=50),c("grams")])```; 
-80%: ```r length(grams[which(grams$cumpct<=80),c("grams")])```; and 90%: 
-```r length(grams[which(grams$cumpct<=90),c("grams")])```.
-
 If only ```r  length(unigrams[which(unigrams$cumpct<=90),c("grams")]) ``` unigrams is needed to cover 90% of the effective vocabulary, then it would seem that by removing very low frequency words I will be able to achieve a smaller dataset (```r paste(length(unigrams[which(unigrams$cumpct<=90),c("grams")])/length(unigrams$grams) * 100,"%")```) to base the prediction algorithm on. 
+
+It's also interesting to look at what are the most frequently used bigrams and trigrams:
+```{r bigrams and trigrams, cache=TRUE}
+head(bigrams)
+head(trigrams)
+```
+
+It seems that there are single letter words and acronyms which shouldn't be part of the corpus, and I would need to remove such terms in the next steps.
 
 ## Conclusions & Next Steps
 
-My plan for the remaining time for this project is to:
+From my current understanding, my plan for the remaining time for this project is to:
 
+- Remove noise such as single letter words, acronyms, non-English terms (e.g. chinese characters). 
+- Perhaps I will exclude terms which are shorter than a certain number of characters to ensure that I will have proper words; also, this may be better since I think prediction should help reduce time to type for longer, rare or frequently misspelled words and not short ones.
 - Use stemming and stem completion to reduce the number of terms in the corpus. Stemming will allow a root word to be predicted in place of its variants
-- Apply clustering to find word associations. As I understand it, I can use clustering to predict relevant words
-- Create the prediction algorithm -- How? I have yet to study this 
+- Create the prediction algorithm --  I have yet to study how to do this. As I understand it, I can apply clustering to find word associations and predict relevant words by searching within clusters
 - Increase the sample size and optimize the final corpus to achieve appropriate coverage and improve prediction accuracy
 - Then create the final application in Shiny
 
 I have had a number of challenges to reach this far into this project. The learning curve is steep and I have had little time to work on this project, not least because I have been travelling the past week for the holiday season and been off the grid. Personal challenges aside, the technical challenge of the project is considerable, especially managing the processing time and memory usage, but with further study once I'm back I think is surmountable.
 
 Thank you.
+
+## Links
+1. The source code for this report can be found here: https://github.com/zaros/coursera-capstone
+2. The list of bad words was obtained from: http://www.bannedwordlist.com
+
+
